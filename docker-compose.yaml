@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:13.5
+    restart: always
+    container_name: database
+    environment:
+      - POSTGRES_USER=cart-demo-db-user
+      - POSTGRES_PASSWORD=cart-demo-db-password
+    volumes:
+      - cart-demo-db:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database
+
+volumes:
+  cart-demo-db:
